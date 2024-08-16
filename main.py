@@ -4,6 +4,7 @@ from langchain_ollama import ChatOllama
 import yfinance as yf
 import os
 
+# not required for this example
 os.environ["OPENAI_API_KEY"] = "NA"
 
 llm = ChatOllama(
