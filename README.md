@@ -53,6 +53,11 @@ This project uses the CrewAI framework to create an agent that retrieves the lat
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+## To Do
+ - [ ] Add real-time stock price fetching
+ - [ ] Add more stock options
+ - [ ] Run the script on a schedule to fetch stock prices at regular intervals using airflow
+
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
