@@ -4,26 +4,22 @@ from langchain_ollama import ChatOllama
 import yfinance as yf
 from typing import Dict, List, Tuple
 
-
-# Create a custom ChatOllama class with the required method
 class CustomChatOllama(ChatOllama):
     def supports_stop_words(self) -> bool:
         return False
     
     def supports_function_calling(self) -> bool:
         return False
+        
+    def call(self, prompt: str, **kwargs) -> str:
+        response = self.invoke(prompt)
+        return response.content
 
-# Update the LLM initialization
+# Initialize the LLaMA model
 llm = CustomChatOllama(
     model="deepseek-r1:8b",
     base_url="http://localhost:11434"
 )
-
-# # Initialize the LLaMA model
-# llm = ChatOllama(
-#     model="deepseek-r1:8b",
-#     base_url="http://localhost:11434"
-# )
 
 def get_stock_price(ticker: str) -> float:
     stock = yf.Ticker(ticker)
@@ -52,7 +48,7 @@ def create_stock_agent() -> StockPriceAgent:
     return StockPriceAgent(
         llm=llm,
         role="Stock Market Analyst",
-        goal="Provide the latest stock prices of Tesla, Microsoft, Apple, and Google, and offer recommendations.",
+        goal="Provide the latest stock prices of Tesla, Microsoft, Apple, and Google, Nvidia and offer recommendations.",
         backstory="You are an excellent stock market specialist with over 10 years of experience. You have a deep understanding of the stock market and have been following these stocks for a long time.",
         allow_delegation=False,
         verbose=True,
@@ -63,7 +59,7 @@ def create_tasks(agent: StockPriceAgent) -> List[Task]:
         Task(
             description="Fetch the current stock prices of Tesla, Microsoft, Apple, and Google and Nvidia",
             agent=agent,
-            expected_output="Current stock prices of Tesla, Microsoft, Apple, and Google",
+            expected_output="Current stock prices of Tesla, Microsoft, Apple, and Google and Nvidia",
             max_iterations=200,
             max_time_seconds=200
         ),
